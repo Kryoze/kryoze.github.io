@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalkulator Jaringan</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Kalkulator Jaringan</h1>
+
+        <nav class="main-nav">
+            <button class="nav-button active" data-page="subnet-calculator">Kalkulator Subnet</button>
+            <button class="nav-button" data-page="data-converter">Konverter Kecepatan Data</button>
+            <button class="nav-button" data-page="subnet-divider">Pembagi Subnet</button>
+        </nav>
+
+        <div id="pages-container">
+            <section id="subnet-calculator" class="page active">
+                <h2>Kalkulator Subnet IP (IPv4)</h2>
+                <div class="input-group">
+                    <label for="ipAddress">Alamat IP:</label>
+                    <input type="text" id="ipAddress" placeholder="Contoh: 192.168.1.0">
+                </div>
+                <div class="input-group">
+                    <label for="cidr">CIDR (/mask):</label>
+                    <input type="number" id="cidr" min="0" max="32" value="24">
+                </div>
+                <button id="calculateSubnet">Hitung Subnet</button>
+
+                <div class="results-area" id="subnetResults">
+                    <h3>Hasil:</h3>
+                    <p><strong>Alamat IP:</strong> <span id="resIpAddress"></span></p>
+                    <p><strong>Subnet Mask:</strong> <span id="resSubnetMask"></span></p>
+                    <p><strong>CIDR:</strong> <span id="resCidr"></span></p>
+                    <p><strong>Network ID:</strong> <span id="resNetworkId"></span></p>
+                    <p><strong>Broadcast ID:</strong> <span id="resBroadcastId"></span></p>
+                    <p><strong>Rentang Host:</strong> <span id="resHostRange"></span></p>
+                    <p><strong>Jumlah Host Tersedia:</strong> <span id="resAvailableHosts"></span></p>
+                </div>
+            </section>
+
+            <section id="data-converter" class="page hidden">
+                <h2>Konverter Kecepatan Transfer Data</h2>
+                <div class="converter-grid">
+                    <div class="converter-item">
+                        <input type="number" id="inputDataValue" placeholder="Masukkan nilai" value="1">
+                        <select id="inputDataUnit">
+                            <option value="b">bit/s</option>
+                            <option value="Kb">Kbit/s</option>
+                            <option value="Mb">Mbit/s</option>
+                            <option value="Gb">Gbit/s</option>
+                            <option value="B">Byte/s</option>
+                            <option value="KB">KByte/s</option>
+                            <option value="MB" selected>MByte/s</option>
+                            <option value="GB">GByte/s</option>
+                        </select>
+                    </div>
+                    <p class="equals-sign"> = </p>
+                    <div class="converter-item">
+                        <span id="outputDataValue"></span>
+                        <select id="outputDataUnit">
+                            <option value="b">bit/s</option>
+                            <option value="Kb">Kbit/s</option>
+                            <option value="Mb">Mbit/s</option>
+                            <option value="Gb">Gbit/s</option>
+                            <option value="B">Byte/s</option>
+                            <option value="KB">KByte/s</option>
+                            <option value="MB">MByte/s</option>
+                            <option value="GB" selected>GByte/s</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="error-message" id="dataConverterError"></div>
+            </section>
+
+            <section id="subnet-divider" class="page hidden">
+                <h2>Pembagi Subnet IP (VLSM/CIDR)</h2>
+                <div class="input-group">
+                    <label for="baseIp">IP Network Dasar:</label>
+                    <input type="text" id="baseIp" placeholder="Contoh: 192.168.0.0/24">
+                </div>
+                <div class="input-group">
+                    <label for="numSubnets">Jumlah Subnet yang Dibutuhkan:</label>
+                    <input type="number" id="numSubnets" min="1" value="2">
+                </div>
+                <button id="divideSubnets">Bagi Subnet</button>
+
+                <div class="results-area" id="subnetDividerResults">
+                    <h3>Hasil Pembagian Subnet:</h3>
+                    <table id="subnetTable">
+                        <thead>
+                            <tr>
+                                <th>Subnet ID</th>
+                                <th>Alamat Network</th>
+                                <th>Mask</th>
+                                <th>Rentang Host</th>
+                                <th>Broadcast</th>
+                                <th>Jumlah Host</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            </tbody>
+                    </table>
+                    <div class="error-message" id="subnetDividerError"></div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
