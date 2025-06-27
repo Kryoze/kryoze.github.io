@@ -3,7 +3,7 @@
 // --- 0. DOM Elements & Utility Functions ---
 const navButtons = document.querySelectorAll('.nav-button');
 const pages = document.querySelectorAll('.page');
-const errorMessageElements = document.querySelectorAll('.error-message'); // Collect all error messages
+const errorMessageElements = document.querySelectorAll('.error-message');
 
 function showPage(pageId) {
     pages.forEach(page => {
@@ -184,6 +184,8 @@ const outputDataUnit = document.getElementById('outputDataUnit');
 const dataConverterError = document.getElementById('dataConverterError');
 
 // Base unit: bit/s (b)
+// Penting: Awalan SI (kilo, mega, giga) untuk 'bit' adalah basis 1000.
+// Awalan biner (kibi, mebi, gibi) yang sering disingkat untuk 'Byte' adalah basis 1024.
 const unitMultipliers = {
     'b': 1,           // bit
     'Kb': 1000,       // Kilobit
@@ -223,12 +225,20 @@ function convertDataSpeed() {
     // Convert from base unit (bits/second) to output unit
     let result = valueInBits / unitMultipliers[outputUnit];
 
-    // Format result for readability
-    if (result >= 1000 || result < 1) {
-        outputDataValue.textContent = result.toPrecision(4);
+    let formattedResult;
+
+    // Periksa apakah hasilnya adalah bilangan bulat
+    if (Number.isInteger(result)) {
+        // Jika bulat, gunakan toString() untuk mendapatkan representasi angka penuh tanpa desimal
+        formattedResult = result.toString();
     } else {
-        outputDataValue.textContent = result.toFixed(2);
+        // Jika bukan bilangan bulat, gunakan toFixed() dengan presisi tinggi
+        // dan kemudian hapus angka nol di belakang koma jika tidak diperlukan.
+        formattedResult = result.toFixed(10); // Contoh 10 desimal, bisa disesuaikan
+        formattedResult = formattedResult.replace(/\.?0+$/, ''); // Hapus .000000 jika hasil bulat, atau .0+ jika angka di belakangnya 0 semua
     }
+    
+    outputDataValue.textContent = formattedResult;
 }
 convertDataSpeed(); // Perform initial conversion on load
 
