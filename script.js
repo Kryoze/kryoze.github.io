@@ -184,18 +184,17 @@ const outputDataUnit = document.getElementById('outputDataUnit');
 const dataConverterError = document.getElementById('dataConverterError');
 
 // Base unit: bit/s (b)
-// Penting: Awalan SI (kilo, mega, giga) untuk 'bit' adalah basis 1000.
-// Awalan biner (kibi, mebi, gibi) yang sering disingkat untuk 'Byte' adalah basis 1024.
+// SEMUA awalan (kilo, mega, giga) akan menggunakan BASIS 1024.
 const unitMultipliers = {
     'b': 1,           // bit
-    'Kb': 1000,       // Kilobit
-    'Mb': 1_000_000,  // Megabit
-    'Gb': 1_000_000_000, // Gigabit
+    'Kb': 1024,       // Kilobit (1024 bit)
+    'Mb': 1024 * 1024, // Megabit (1024 Kibit = 1048576 bit)
+    'Gb': 1024 * 1024 * 1024, // Gigabit (1024 Mibit = 1073741824 bit)
 
     'B': 8,           // Byte (8 bits)
-    'KB': 8 * 1024,   // Kilobyte (kibibyte) = 1024 Byte = 8192 bits
-    'MB': 8 * 1024 * 1024, // Megabyte (mebibyte) = 1024 KB = 8388608 bits
-    'GB': 8 * 1024 * 1024 * 1024 // Gigabyte (gibibyte) = 1024 MB = 8589934592 bits
+    'KB': 8 * 1024,   // Kilobyte (1024 Byte = 8192 bits)
+    'MB': 8 * 1024 * 1024, // Megabyte (1024 KB = 8388608 bits)
+    'GB': 8 * 1024 * 1024 * 1024 // Gigabyte (1024 MB = 8589934592 bits)
 };
 
 inputDataValue.addEventListener('input', convertDataSpeed);
@@ -219,23 +218,17 @@ function convertDataSpeed() {
         return;
     }
 
-    // Convert input value to base unit (bits/second)
     const valueInBits = inputValue * unitMultipliers[inputUnit];
 
-    // Convert from base unit (bits/second) to output unit
     let result = valueInBits / unitMultipliers[outputUnit];
 
     let formattedResult;
 
-    // Periksa apakah hasilnya adalah bilangan bulat
     if (Number.isInteger(result)) {
-        // Jika bulat, gunakan toString() untuk mendapatkan representasi angka penuh tanpa desimal
         formattedResult = result.toString();
     } else {
-        // Jika bukan bilangan bulat, gunakan toFixed() dengan presisi tinggi
-        // dan kemudian hapus angka nol di belakang koma jika tidak diperlukan.
-        formattedResult = result.toFixed(10); // Contoh 10 desimal, bisa disesuaikan
-        formattedResult = formattedResult.replace(/\.?0+$/, ''); // Hapus .000000 jika hasil bulat, atau .0+ jika angka di belakangnya 0 semua
+        formattedResult = result.toFixed(10); // Use a high precision for decimals
+        formattedResult = formattedResult.replace(/\.?0+$/, ''); // Remove trailing zeros and optional decimal point
     }
     
     outputDataValue.textContent = formattedResult;
