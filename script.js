@@ -185,14 +185,15 @@ const dataConverterError = document.getElementById('dataConverterError');
 
 // Base unit: bit/s (b)
 const unitMultipliers = {
-    'b': 1,
-    'Kb': 1000,
-    'Mb': 1_000_000,
-    'Gb': 1_000_000_000,
-    'B': 8, // 1 Byte = 8 bits
-    'KB': 8000,
-    'MB': 8_000_000,
-    'GB': 8_000_000_000
+    'b': 1,           // bit
+    'Kb': 1000,       // Kilobit
+    'Mb': 1_000_000,  // Megabit
+    'Gb': 1_000_000_000, // Gigabit
+
+    'B': 8,           // Byte (8 bits)
+    'KB': 8 * 1024,   // Kilobyte (kibibyte) = 1024 Byte = 8192 bits
+    'MB': 8 * 1024 * 1024, // Megabyte (mebibyte) = 1024 KB = 8388608 bits
+    'GB': 8 * 1024 * 1024 * 1024 // Gigabyte (gibibyte) = 1024 MB = 8589934592 bits
 };
 
 inputDataValue.addEventListener('input', convertDataSpeed);
@@ -223,7 +224,7 @@ function convertDataSpeed() {
     let result = valueInBits / unitMultipliers[outputUnit];
 
     // Format result for readability
-    if (result >= 1000 || result < 1) { // Use fixed decimal for small/large
+    if (result >= 1000 || result < 1) {
         outputDataValue.textContent = result.toPrecision(4);
     } else {
         outputDataValue.textContent = result.toFixed(2);
